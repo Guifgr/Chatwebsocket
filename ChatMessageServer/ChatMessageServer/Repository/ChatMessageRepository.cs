@@ -11,12 +11,10 @@ namespace ChatMessageServer.Repository
     {
         public async Task<ChatMessage> InsertAsync(ChatMessage message)
         {
-            using (var context = new Context())
-            {
-                await context.ChatMessages.AddAsync(message);
-                await context.SaveChangesAsync();
-                return message;
-            }
+            await using var context = new Context();
+            await context.ChatMessages.AddAsync(message);
+            await context.SaveChangesAsync();
+            return message;
         }
         
         public async Task<ChatMessage> GetAsync(int id)
